@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Books = require('../models/Books');
 
-
 //GET /books - Full book list
 router.get('/', (req, res) =>
  Books.findAll({order: [["author", "ASC"]]}).then(function(books){
@@ -23,6 +22,7 @@ router.post('/new', function(req, res, next) {
         title: "New Book",
         errors: err.errors
       });
+      console.log(err);
     } else {
       throw err;
     }
@@ -44,11 +44,11 @@ router.get('/:id/update', function(req, res, next){
       res.render('books/update-book', {book: book, title: 'Edit Book'});
     } else {
       res.render('error', err);
-      console.log(err);
+      // console.log(err);
     }
   }).catch(function(err){
     res.render('error', err);
-    console.log(err);
+    // console.log(err);
   });
 });
 
@@ -79,8 +79,10 @@ router.post('/:id/update', function(req, res, next){
     res.redirect("/");
   }).catch(function(err){
     if(err.name === "SequelizeValidationError") {
+      // let book.id = req.params.id;
+      const errors = err.errors.map(error => error.message);
       res.render("books/update-book", {
-        book: Book.build(req.body),
+        book: Books.build(req.body),
         title: "Edit Book",
         errors: err.errors
       });

@@ -92,6 +92,10 @@ input[type=text] {
   width: 300px;
 }
 
+input[type=submit] {
+  font-weight: bold;
+}
+
 .error {
   color: rgb(236, 15, 15);
 }
