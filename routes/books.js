@@ -79,11 +79,10 @@ router.post('/:id/update', function(req, res, next){
     res.redirect("/");
   }).catch(function(err){
     if(err.name === "SequelizeValidationError") {
-      // let book.id = req.params.id;
-      const errors = err.errors.map(error => error.message);
+      let book = Books.build(req.body);
+      book.id = req.params.id;
       res.render("books/update-book", {
-        book: Books.build(req.body),
-        title: "Edit Book",
+        book: book,
         errors: err.errors
       });
     } else {
